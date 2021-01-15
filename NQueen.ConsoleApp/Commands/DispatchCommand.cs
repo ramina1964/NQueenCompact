@@ -112,13 +112,13 @@ namespace NQueen.ConsoleApp.Commands
                 default:
                     Console.WriteLine("Invalid Option: Try 0, 1, or 2.");
                     return false;
-            } 
+            }
         }
 
         private static bool CheckBoardSize(string value)
         {
             var isValidNo = sbyte.TryParse(value, out sbyte size);
-            if (!isValidNo) 
+            if (!isValidNo)
             {
                 Console.WriteLine("Invalid number. Try again.");
                 return false;
@@ -134,7 +134,7 @@ namespace NQueen.ConsoleApp.Commands
             if (IsSolutionModeSingle && BoardSize > Utility.MaxBoardSizeForSingleSolution)
             {
                 Console.WriteLine(Utility.SizeTooLargeForSingleSolutionMsg);
-                return false; 
+                return false;
             }
 
             if (IsSolutionModeUnique && BoardSize > Utility.MaxBoardSizeForUniqueSolutions)
