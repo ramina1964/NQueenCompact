@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace NQueen.Kernel
@@ -125,23 +124,12 @@ namespace NQueen.Kernel
         {
             // All Symmetrical solutions are found and saved. Quit the recursion.
             if (QueenList[0] == HalfSize)
-            {
-                //ProgressValue = Math.Round(100.0 * QueenList[0] / HalfSize, 1);
-                //OnProgressChanged(this, new ProgressValueChangedEventArgs(ProgressValue));
-                return;
-            }
+            { return; }
 
             // Here a new solution is found.
             if (colNo == BoardSize)
             {
                 UpdateSolutions(QueenList);
-
-                // Activate this code in case of IsVisulaized == true.
-                //if (DisplayMode == DisplayMode.Visualize)
-                //{ SolutionFound(this, new SolutionFoundEventArgs(QueenList)); }
-
-                //ProgressValue = Math.Round(100.0 * QueenList[0] / HalfSize, 1);
-                //OnProgressChanged(this, new ProgressValueChangedEventArgs(ProgressValue));
                 return;
             }
 
@@ -161,17 +149,7 @@ namespace NQueen.Kernel
 
             // For SolutionMode == SolutionMode.Unique: If half sized is reached, quit the recursion.
             if (QueenList[0] == HalfSize)
-            {
-                //ProgressValue = Math.Round(100.0 * QueenList[0] / HalfSize, 1);
-                //OnProgressChanged(this, new ProgressValueChangedEventArgs(ProgressValue));
-                return;
-            }
-
-            //if (DisplayMode == DisplayMode.Visualize)
-            //{
-            //    OnQueenPlaced(this, new QueenPlacedEventArgs(QueenList));
-            //    Thread.Sleep(DelayInMilliseconds);
-            //}
+            { return; }
 
             if (SolutionMode == SolutionMode.Single && NoOfSolutions == 1)
             { return; }
@@ -183,13 +161,6 @@ namespace NQueen.Kernel
             if (colNo == BoardSize)
             {
                 UpdateSolutions(QueenList);
-
-                // Activate this code in case of IsVisulaized == true.
-                //if (DisplayMode == DisplayMode.Visualize)
-                //{ SolutionFound(this, new SolutionFoundEventArgs(QueenList)); }
-
-                //ProgressValue = Math.Round(100.0 * QueenList[0] / HalfSize, 1);
-                //OnProgressChanged(this, new ProgressValueChangedEventArgs(ProgressValue));
                 return;
             }
 
@@ -226,6 +197,7 @@ namespace NQueen.Kernel
 
             // For SolutionMode.Unique: Add this solution to Solutions, in case of no overlaps between Solutions and symmetricalSolutions.
             var symmetricalSolutions = Utility.GetSymmetricalSolutions(solution).ToList();
+
             if (!Solutions.Overlaps(symmetricalSolutions))
             { Solutions.Add(solution); }
         }

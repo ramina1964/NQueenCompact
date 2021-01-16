@@ -57,8 +57,8 @@ namespace NQueen.ConsoleApp.Commands
             var noOfSolutions = simulationResult.NoOfSolutions;
             var elapsedTime = simulationResult.ElapsedTimeInSec;
             var firstSolution = simulationResult.Solutions.FirstOrDefault();
-            var formattedSolutionNo = $"Number of solutions found: {noOfSolutions,15:G3}";
-            var formattedElapsedTime = $"Elapsed time in seconds: {elapsedTime,10:F1}";
+            var formattedSolutionNo = $"Number of solutions found: {noOfSolutions,10:N0}";
+            var formattedElapsedTime = $"Elapsed time in seconds: {elapsedTime,11:N1}";
 
             if (noOfSolutions == 0)
             {
