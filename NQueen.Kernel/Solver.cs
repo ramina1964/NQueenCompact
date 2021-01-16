@@ -74,6 +74,7 @@ namespace NQueen.Kernel
         public sbyte HalfSize { get; set; }
 
         public sbyte[] QueenList { get; set; }
+
         #endregion PublicProperties
 
         protected virtual void OnProgressChanged(object sender, ProgressValueChangedEventArgs e) => ProgressValueChanged?.Invoke(this, e);
@@ -87,10 +88,38 @@ namespace NQueen.Kernel
         private IEnumerable<Solution> MainSolve()
         {
             // Recursive call to start the simulation
-            RecSolve(0);
+            if (SolutionMode == SolutionMode.All && DisplayMode == DisplayMode.Hide)
+            { RecSolveConsoleForAllSolutions(0); }
+
+            else
+            { RecSolve(0); }
 
             return Solutions
                     .Select((s, index) => new Solution(s, index + 1));
+        }
+
+        // Recursive Solve Algorithm Simplified for Console, and SolutionMode.All
+        private void RecSolveConsoleForAllSolutions(sbyte colNo)
+        {
+            if (colNo == -1)
+            { return; }
+
+            // A new solution is found.
+            if (colNo == BoardSize)
+            {
+                if (NoOfAllSolutions < Utility.MaxNoOfSolutionsInOutput)
+                { Solutions.Add(QueenList); }
+                NoOfAllSolutions += 1;
+                return;
+            }
+
+            QueenList[colNo] = LocateQueen(colNo);
+            if (QueenList[colNo] == -1)
+            { return; }
+
+            var nextCol = (sbyte)(colNo + 1);
+            RecSolveConsoleForAllSolutions(nextCol);
+            RecSolveConsoleForAllSolutions(colNo);
         }
 
         private void RecSolve(sbyte colNo)
