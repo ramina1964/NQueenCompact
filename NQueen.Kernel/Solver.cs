@@ -56,7 +56,7 @@ namespace NQueen.Kernel
             {
                 BoardSize = BoardSize,
                 Solutions = solutions,
-                NoOfSolutions = (SolutionMode == SolutionMode.All)? NoOfSolutions : Solutions.Count,
+                NoOfSolutions = (SolutionMode == SolutionMode.All) ? NoOfSolutions : Solutions.Count,
                 ElapsedTimeInSec = elapsedTimeInSec
             };
         }
@@ -178,19 +178,20 @@ namespace NQueen.Kernel
                 return;
             }
 
-            // For SolutionMode.Unique: Add this solution to Solutions, in case of no overlaps between Solutions and symmetricalSolutions.
-            if (SolutionMode == SolutionMode.Unique)
+            // For SolutionMode.All: Increase NoOfAllSolutions, and save this solution, if MaxNoOfSolutionsInOutput not reached.
+            if (SolutionMode == SolutionMode.All)
             {
-                var symmetricalSolutions = Utility.GetSymmetricalSolutions(solution);
-                symmetricalSolutions.ForEach(s => Solutions.Add(s));
+                if (NoOfSolutions < Utility.MaxNoOfSolutionsInOutput)
+                { Solutions.Add(solution); }
+
+                NoOfSolutions++;
                 return;
             }
 
-            // For SolutionMode.All: Increase NoOfAllSolutions, and save this solution, if MaxNoOfSolutionsInOutput not reached.
-            if (NoOfSolutions < Utility.MaxNoOfSolutionsInOutput)
+            // For SolutionMode.Unique: Add this solution to Solutions, in case of no overlaps between Solutions and symmetricalSolutions.
+            var symmetricalSolutions = Utility.GetSymmetricalSolutions(solution).ToList();
+            if (!Solutions.Overlaps(symmetricalSolutions))
             { Solutions.Add(solution); }
-            
-            NoOfSolutions++;
         }
 
         // Locate Queen
