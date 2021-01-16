@@ -13,7 +13,7 @@ namespace NQueen.Shared
             BoardSize = queenList.Length;
             Id = id;
             Name = ToString();
-            QueenList = queenList; //.ToArray();
+            QueenList = queenList;
             Positions = SetPositions(QueenList);
             Details = GetDetails();
         }

@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NQueen.Kernel;
 using NQueen.Shared.Enums;
-using NUnit.Framework;
+using NUnit.Framework; 
 
 namespace NQueen.Test
 {

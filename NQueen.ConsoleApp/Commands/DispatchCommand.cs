@@ -53,9 +53,10 @@ namespace NQueen.ConsoleApp.Commands
             var solver = new Solver(BoardSize)
             { SolutionMode = SolutionMode };
 
-            var simulationResult = solver.GetSimulationResultsAsync(BoardSize, SolutionMode, DisplayMode.Hide);
-            var noOfSolutions = simulationResult.Result.NoOfSolutions;
-            var elapsedTime = simulationResult.Result.ElapsedTimeInSec;
+            var simulationResult = solver.GetSimulationResultsAsync(BoardSize, SolutionMode, DisplayMode.Hide).Result;
+            var noOfSolutions = simulationResult.NoOfSolutions;
+            var elapsedTime = simulationResult.ElapsedTimeInSec;
+            var firstSolution = simulationResult.Solutions.FirstOrDefault();
             var formattedSolutionNo = $"Number of solutions found: {noOfSolutions,15:G3}";
             var formattedElapsedTime = $"Elapsed time in seconds: {elapsedTime,10:F1}";
 
@@ -71,13 +72,12 @@ namespace NQueen.ConsoleApp.Commands
             ConsoleUtils.WriteLineColored(ConsoleColor.Gray, formattedSolutionNo);
             ConsoleUtils.WriteLineColored(ConsoleColor.Gray, formattedElapsedTime);
 
-            var example = simulationResult.Result.Solutions.FirstOrDefault();
-            var solutionTitle = (example == null)
+            var solutionTitle = (firstSolution == null)
                                 ? "\nNo Solution Found!"
                                 : "\nFirst Solution Found - Numbers in paranteses: Column No. and Row No., Starting from the Lower Left Corner:";
             ConsoleUtils.WriteLineColored(ConsoleColor.Blue, solutionTitle);
-            ConsoleUtils.WriteLineColored(ConsoleColor.Yellow, example.Details);
-            var board = CreateChessBoard(example.QueenList);
+            ConsoleUtils.WriteLineColored(ConsoleColor.Yellow, firstSolution.Details);
+            var board = CreateChessBoard(firstSolution.QueenList);
             ConsoleUtils.WriteLineColored(ConsoleColor.Blue, $"\nDrawing of first solution:\n");
 
             var message = "\tIMPORTANT - You need to set default fonts (in this console window) to SimSun-ExtB in order to show unicode characters.\n";

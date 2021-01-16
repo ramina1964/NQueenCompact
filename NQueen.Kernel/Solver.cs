@@ -105,10 +105,7 @@ namespace NQueen.Kernel
             // A new solution is found.
             if (colNo == BoardSize)
             {
-                if (NoOfSolutions < Utility.MaxNoOfSolutionsInOutput)
-                { Solutions.Add(QueenList); }
-                NoOfSolutions++;
-
+                UpdateSolutions(QueenList);
                 return;
             }
 
@@ -192,10 +189,9 @@ namespace NQueen.Kernel
 
             // For SolutionMode.All: Increase NoOfAllSolutions, and save this solution, if MaxNoOfSolutionsInOutput not reached.
             if (NoOfSolutions < Utility.MaxNoOfSolutionsInOutput)
-            {
-                Solutions.Add(solution);
-                NoOfSolutions++;
-            }
+            { Solutions.Add(solution); }
+            
+            NoOfSolutions++;
         }
 
         // Locate Queen
