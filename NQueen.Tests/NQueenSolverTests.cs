@@ -17,10 +17,10 @@ namespace NQueen.Test
             ExpectedSolutions = GetExpectedSolutions(boardSize, solutionMode);
 
             // Act
-            ActualSolutions = GetActualSolutions(boardSize, solutionMode, DisplayMode.Hide);
+            ActualSolutions = GetActualSolutions(boardSize, solutionMode);
 
             // Assert
-            Assert.AreEqual(ExpectedSolutions.Count, ActualSolutions.Count);
+            Assert.AreEqual(ExpectedNoOfSolutions, ActualNoOfSolutions);
             ActualSolutions.Should().Equals(ExpectedSolutions);
         }
 
@@ -39,10 +39,10 @@ namespace NQueen.Test
             ExpectedSolutions = GetExpectedSolutions(boardSize, solutionMode);
 
             // Act
-            ActualSolutions = GetActualSolutions(boardSize, solutionMode, DisplayMode.Hide);
+            ActualSolutions = GetActualSolutions(boardSize, solutionMode);
 
             // Assert
-            Assert.AreEqual(ExpectedSolutions.Count, ActualSolutions.Count);
+            Assert.AreEqual(ExpectedNoOfSolutions, ActualNoOfSolutions);
             ActualSolutions.Should().Equals(ExpectedSolutions);
         }
 
@@ -55,10 +55,10 @@ namespace NQueen.Test
             ExpectedSolutions = GetExpectedSolutions(boardSize, solutionMode);
 
             // Act
-            ActualSolutions = GetActualSolutions(boardSize, solutionMode, DisplayMode.Hide);
+            ActualSolutions = GetActualSolutions(boardSize, solutionMode);
 
             // Assert
-            Assert.AreEqual(ExpectedSolutions.Count, ActualSolutions.Count);
+            Assert.AreEqual(ExpectedNoOfSolutions, ActualNoOfSolutions);
             ActualSolutions.Should().Equals(ExpectedSolutions);
         }
 
@@ -71,11 +71,11 @@ namespace NQueen.Test
             ExpectedSolutions = GetExpectedSolutions(boardSize, solutionMode);
 
             // Act
-            ActualNoOfSolutions = GetActualNoOfSolutions(boardSize, solutionMode, DisplayMode.Hide);
+            ActualSolutions = GetActualSolutions(boardSize, solutionMode);
 
             // Assert
-            Assert.AreEqual(ExpectedSolutions.Count, ActualNoOfSolutions);
-            ActualSolutions.Should().Equals(ExpectedSolutions);
+            Assert.AreEqual(ExpectedNoOfSolutions, ActualNoOfSolutions);
+            ActualSolutions.Solutions.Should().Equals(ExpectedSolutions);
         }
     }
 }

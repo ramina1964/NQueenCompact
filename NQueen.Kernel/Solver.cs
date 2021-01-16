@@ -67,9 +67,7 @@ namespace NQueen.Kernel
 
         public string BoardSizeText { get; set; }
 
-        private int NoOfAllSolutions { get; set; }
-
-        public int NoOfSolutions => (SolutionMode == SolutionMode.All) ? NoOfAllSolutions : Solutions.Count;
+        public int NoOfSolutions { get; set; }
 
         public sbyte HalfSize { get; set; }
 
@@ -107,9 +105,10 @@ namespace NQueen.Kernel
             // A new solution is found.
             if (colNo == BoardSize)
             {
-                if (NoOfAllSolutions < Utility.MaxNoOfSolutionsInOutput)
+                if (NoOfSolutions < Utility.MaxNoOfSolutionsInOutput)
                 { Solutions.Add(QueenList); }
-                NoOfAllSolutions += 1;
+                NoOfSolutions++;
+
                 return;
             }
 
@@ -175,6 +174,7 @@ namespace NQueen.Kernel
             if (SolutionMode == SolutionMode.Single)
             {
                 Solutions.Add(solution);
+                NoOfSolutions++;
                 return;
             }
 
@@ -183,14 +183,19 @@ namespace NQueen.Kernel
             {
                 var symmetricalSolutions = Utility.GetSymmetricalSolutions(solution);
                 if (!symmetricalSolutions.Overlaps(Solutions))
-                { Solutions.Add(solution); }
+                {
+                    Solutions.Add(solution);
+                    NoOfSolutions++;
+                }
                 return;
             }
 
             // For SolutionMode.All: Increase NoOfAllSolutions, and save this solution, if MaxNoOfSolutionsInOutput not reached.
-            if (NoOfAllSolutions < Utility.MaxNoOfSolutionsInOutput)
-            { Solutions.Add(solution); }
-            NoOfAllSolutions += 1;
+            if (NoOfSolutions < Utility.MaxNoOfSolutionsInOutput)
+            {
+                Solutions.Add(solution);
+                NoOfSolutions++;
+            }
         }
 
         // Locate Queen
