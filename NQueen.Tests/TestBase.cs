@@ -13,6 +13,8 @@ namespace NQueen.Test
 
         public List<sbyte[]> ExpectedSolutions { get; set; }
 
+        public int ExpectedNoOfSolutions => ExpectedSolutions.Count;
+
         public List<sbyte[]> ActualSolutions { get; set; }
 
         public int ActualNoOfSolutions { get; set; }

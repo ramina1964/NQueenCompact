@@ -69,11 +69,12 @@ namespace NQueen.Kernel
 
         private int NoOfAllSolutions { get; set; }
 
-        public int NoOfSolutions => (SolutionMode == SolutionMode.All) ? NoOfAllSolutions : Solutions.Count; 
+        public int NoOfSolutions => (SolutionMode == SolutionMode.All) ? NoOfAllSolutions : Solutions.Count;
 
         public sbyte HalfSize { get; set; }
 
         public sbyte[] QueenList { get; set; }
+
         #endregion PublicProperties
 
         protected virtual void OnProgressChanged(object sender, ProgressValueChangedEventArgs e) => ProgressValueChanged?.Invoke(this, e);
@@ -87,15 +88,43 @@ namespace NQueen.Kernel
         private IEnumerable<Solution> MainSolve()
         {
             // Recursive call to start the simulation
-            RecSolve(0);
+            if (SolutionMode == SolutionMode.All && DisplayMode == DisplayMode.Hide)
+            { RecSolveConsoleForAllSolutions(0); }
+
+            else
+            { RecSolve(0); }
 
             return Solutions
                     .Select((s, index) => new Solution(s, index + 1));
         }
 
+        // Recursive Solve Algorithm Simplified for Console, and SolutionMode.All
+        private void RecSolveConsoleForAllSolutions(sbyte colNo)
+        {
+            if (colNo == -1)
+            { return; }
+
+            // A new solution is found.
+            if (colNo == BoardSize)
+            {
+                if (NoOfAllSolutions < Utility.MaxNoOfSolutionsInOutput)
+                { Solutions.Add(QueenList); }
+                NoOfAllSolutions += 1;
+                return;
+            }
+
+            QueenList[colNo] = LocateQueen(colNo);
+            if (QueenList[colNo] == -1)
+            { return; }
+
+            var nextCol = (sbyte)(colNo + 1);
+            RecSolveConsoleForAllSolutions(nextCol);
+            RecSolveConsoleForAllSolutions(colNo);
+        }
+
         private void RecSolve(sbyte colNo)
         {
-            if (CancelSolver)
+            if (CancelSolver || colNo == -1)
             { return; }
 
             // For SolutionMode == SolutionMode.Unique: If half sized is reached, quit the recursion.
@@ -115,9 +144,6 @@ namespace NQueen.Kernel
             if (SolutionMode == SolutionMode.Single && NoOfSolutions == 1)
             { return; }
 
-            if (colNo == -1)
-            { return; }
-
             // A new solution is found.
             if (colNo == BoardSize)
             {
@@ -134,9 +160,7 @@ namespace NQueen.Kernel
 
             QueenList[colNo] = LocateQueen(colNo);
             if (QueenList[colNo] == -1)
-            {
-                return;
-            }
+            { return; }
 
             var nextCol = (sbyte)(colNo + 1);
             RecSolve(nextCol);
@@ -147,29 +171,26 @@ namespace NQueen.Kernel
         {
             var solution = queens.ToArray();
 
-            // If solutionMode == SolutionMode.Single, then we are done.
+            // If SolutionMode.Single, then we are done.
             if (SolutionMode == SolutionMode.Single)
             {
                 Solutions.Add(solution);
                 return;
             }
 
-            var symmetricalSolutions = Utility.GetSymmetricalSolutions(solution);
-
-            // For SolutionMode.All: Increase NoOfSolutions, and possibly save this solution.
-            if (SolutionMode == SolutionMode.All)
+            // For SolutionMode.Unique: Add this solution to Solutions, in case of no overlaps between Solutions and symmetricalSolutions.
+            if (SolutionMode == SolutionMode.Unique)
             {
-                NoOfAllSolutions += 1;
-                if (NoOfAllSolutions < Utility.MaxNoOfSolutionsInOutput)
+                var symmetricalSolutions = Utility.GetSymmetricalSolutions(solution);
+                if (!symmetricalSolutions.Overlaps(Solutions))
                 { Solutions.Add(solution); }
                 return;
             }
 
-            // For SolutionMode.Unique: Add this solution to Solutions, in case of no overlaps between Solutions and symmetricalSolutions.
-            if (!symmetricalSolutions.Overlaps(Solutions))
-            {
-                Solutions.Add(solution);
-            }
+            // For SolutionMode.All: Increase NoOfAllSolutions, and save this solution, if MaxNoOfSolutionsInOutput not reached.
+            if (NoOfAllSolutions < Utility.MaxNoOfSolutionsInOutput)
+            { Solutions.Add(solution); }
+            NoOfAllSolutions += 1;
         }
 
         // Locate Queen

@@ -48,7 +48,7 @@ namespace NQueen.Test
 
         [TestCase(4, SolutionMode.Unique), TestCase(5, SolutionMode.Unique), TestCase(6, SolutionMode.Unique)]
         [TestCase(7, SolutionMode.Unique), TestCase(8, SolutionMode.Unique), TestCase(9, SolutionMode.Unique)]
-        public void Should_generate_correct_unique_solutions(sbyte boardSize, SolutionMode solutionMode)
+        public void Should_generate_correct_list_of_unique_solutions(sbyte boardSize, SolutionMode solutionMode)
         {
             // Arrange
             Sut = new Solver(boardSize);
@@ -64,7 +64,7 @@ namespace NQueen.Test
 
         [TestCase(1, SolutionMode.All), TestCase(4, SolutionMode.All), TestCase(5, SolutionMode.All)]
         [TestCase(6, SolutionMode.All), TestCase(7, SolutionMode.All), TestCase(8, SolutionMode.All)]
-        public void Should_generate_correct_no_of_all_solutions(sbyte boardSize, SolutionMode solutionMode)
+        public void Should_generate_correct_list_of_all_solutions(sbyte boardSize, SolutionMode solutionMode)
         {
             // Arrange
             Sut = new Solver(boardSize);
