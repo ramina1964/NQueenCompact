@@ -89,6 +89,9 @@ namespace NQueen.Kernel
             if (SolutionMode == SolutionMode.All && DisplayMode == DisplayMode.Hide)
             { RecSolveConsoleForAllSolutions(0); }
 
+            else if (SolutionMode == SolutionMode.Unique && DisplayMode == DisplayMode.Hide)
+            { RecSolveConsoleForUniqueSolutions(0); }
+
             else
             { RecSolve(0); }
 
@@ -116,6 +119,39 @@ namespace NQueen.Kernel
             var nextCol = (sbyte)(colNo + 1);
             RecSolveConsoleForAllSolutions(nextCol);
             RecSolveConsoleForAllSolutions(colNo);
+        }
+
+        private void RecSolveConsoleForUniqueSolutions(sbyte colNo)
+        {
+            // All Symmetrical solutions are found and saved. Quit the recursion.
+            if (QueenList[0] == HalfSize)
+            {
+                //ProgressValue = Math.Round(100.0 * QueenList[0] / HalfSize, 1);
+                //OnProgressChanged(this, new ProgressValueChangedEventArgs(ProgressValue));
+                return;
+            }
+
+            // Here a new solution is found.
+            if (colNo == BoardSize)
+            {
+                UpdateSolutions(QueenList);
+
+                // Activate this code in case of IsVisulaized == true.
+                //if (DisplayMode == DisplayMode.Visualize)
+                //{ SolutionFound(this, new SolutionFoundEventArgs(QueenList)); }
+
+                //ProgressValue = Math.Round(100.0 * QueenList[0] / HalfSize, 1);
+                //OnProgressChanged(this, new ProgressValueChangedEventArgs(ProgressValue));
+                return;
+            }
+
+            QueenList[colNo] = LocateQueen(colNo);
+            if (QueenList[colNo] == -1)
+            { return; }
+
+            var nextCol = (sbyte)(colNo + 1);
+            RecSolveConsoleForUniqueSolutions(nextCol);
+            RecSolveConsoleForUniqueSolutions(colNo);
         }
 
         private void RecSolve(sbyte colNo)
