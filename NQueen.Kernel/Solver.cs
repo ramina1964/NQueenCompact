@@ -55,8 +55,8 @@ namespace NQueen.Kernel
             return new SimulationResults(solutions)
             {
                 BoardSize = BoardSize,
-                NoOfSolutions = NoOfSolutions,
                 Solutions = solutions,
+                NoOfSolutions = (SolutionMode == SolutionMode.All)? NoOfSolutions : Solutions.Count,
                 ElapsedTimeInSec = elapsedTimeInSec
             };
         }
@@ -120,24 +120,27 @@ namespace NQueen.Kernel
 
         private void RecSolve(sbyte colNo)
         {
-            if (CancelSolver || colNo == -1)
+            if (CancelSolver)
             { return; }
 
             // For SolutionMode == SolutionMode.Unique: If half sized is reached, quit the recursion.
-            if (SolutionMode == SolutionMode.Unique && QueenList[0] == HalfSize)
+            if (QueenList[0] == HalfSize)
             {
-                ProgressValue = Math.Round(100.0 * QueenList[0] / HalfSize, 1);
-                OnProgressChanged(this, new ProgressValueChangedEventArgs(ProgressValue));
+                //ProgressValue = Math.Round(100.0 * QueenList[0] / HalfSize, 1);
+                //OnProgressChanged(this, new ProgressValueChangedEventArgs(ProgressValue));
                 return;
             }
 
-            if (DisplayMode == DisplayMode.Visualize)
-            {
-                OnQueenPlaced(this, new QueenPlacedEventArgs(QueenList));
-                Thread.Sleep(DelayInMilliseconds);
-            }
+            //if (DisplayMode == DisplayMode.Visualize)
+            //{
+            //    OnQueenPlaced(this, new QueenPlacedEventArgs(QueenList));
+            //    Thread.Sleep(DelayInMilliseconds);
+            //}
 
             if (SolutionMode == SolutionMode.Single && NoOfSolutions == 1)
+            { return; }
+
+            if (colNo == -1)
             { return; }
 
             // A new solution is found.
@@ -146,11 +149,11 @@ namespace NQueen.Kernel
                 UpdateSolutions(QueenList);
 
                 // Activate this code in case of IsVisulaized == true.
-                if (DisplayMode == DisplayMode.Visualize)
-                { SolutionFound(this, new SolutionFoundEventArgs(QueenList)); }
+                //if (DisplayMode == DisplayMode.Visualize)
+                //{ SolutionFound(this, new SolutionFoundEventArgs(QueenList)); }
 
-                ProgressValue = Math.Round(100.0 * QueenList[0] / HalfSize, 1);
-                OnProgressChanged(this, new ProgressValueChangedEventArgs(ProgressValue));
+                //ProgressValue = Math.Round(100.0 * QueenList[0] / HalfSize, 1);
+                //OnProgressChanged(this, new ProgressValueChangedEventArgs(ProgressValue));
                 return;
             }
 
@@ -179,11 +182,7 @@ namespace NQueen.Kernel
             if (SolutionMode == SolutionMode.Unique)
             {
                 var symmetricalSolutions = Utility.GetSymmetricalSolutions(solution);
-                if (!symmetricalSolutions.Overlaps(Solutions))
-                {
-                    Solutions.Add(solution);
-                    NoOfSolutions++;
-                }
+                symmetricalSolutions.ForEach(s => Solutions.Add(s));
                 return;
             }
 

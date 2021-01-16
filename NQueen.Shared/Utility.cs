@@ -30,7 +30,7 @@ namespace NQueen.Shared
 
         public static string SizeTooLargeForAllSolutionsMsg => $"Board size for all solutions must not exceed {MaxBoardSizeForAllSolutions}.";
 
-        public static HashSet<sbyte[]> GetSymmetricalSolutions(sbyte[] solution)
+        public static List<sbyte[]> GetSymmetricalSolutions(sbyte[] solution)
         {
             sbyte boardSize = (sbyte)solution.Length;
             var symmToMidHorizontal = new sbyte[boardSize];
@@ -61,7 +61,7 @@ namespace NQueen.Shared
                 rotCounter90,
                 rotCounter180,
                 rotCounter270,
-            };
+            }.ToList();
         }
 
         public static List<sbyte[]> GetSymmetricalSolutions(List<sbyte[]> solution) =>

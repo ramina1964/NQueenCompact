@@ -68,7 +68,6 @@ namespace NQueen.ConsoleApp.Commands
 
             var simTitle = $"Summary of the Results for BoardSize = { BoardSize } and DisplayMode = { SolutionMode }";
             ConsoleUtils.WriteLineColored(ConsoleColor.Blue, $"\n{simTitle}:");
-
             ConsoleUtils.WriteLineColored(ConsoleColor.Gray, formattedSolutionNo);
             ConsoleUtils.WriteLineColored(ConsoleColor.Gray, formattedElapsedTime);
 
