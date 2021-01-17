@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NQueen.Kernel
 {
-    public class Solver : ISolver, ILivePresentation
+    public class Solver : ISolver, ISolutionBuildup
     {
         public Solver(sbyte boardSize) => Initialize(boardSize);
 
