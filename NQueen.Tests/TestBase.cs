@@ -5,7 +5,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NQueen.Test
+namespace NQueen.Tests
 {
     [TestFixture]
     public class TestBase
@@ -21,9 +21,9 @@ namespace NQueen.Test
         public int ActualNoOfSolutions => ActualSolutions.NoOfSolutions;
 
         public static List<sbyte[]> GetExpectedSolutions(sbyte boardSize, SolutionMode solutionMode)
-            => (solutionMode == SolutionMode.Single)
+            => solutionMode == SolutionMode.Single
                 ? GetSingleSolution(boardSize).ToList()
-                : (solutionMode == SolutionMode.Unique)
+                : solutionMode == SolutionMode.Unique
                 ? GetUniqueSolutions(boardSize).ToList()
                 : GetAllSolutions(boardSize).ToList();
 
