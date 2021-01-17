@@ -9,29 +9,17 @@ using System.Threading.Tasks;
 
 namespace NQueen.Kernel
 {
-    public class Solver : ISolver
+    public class Solver : ISolver, ILivePresentation
     {
         public Solver(sbyte boardSize) => Initialize(boardSize);
 
         #region ISolverInterface
 
-        public int DelayInMilliseconds { get; set; }
-
         public bool CancelSolver { get; set; }
 
         public SolutionMode SolutionMode { get; set; }
 
-        public DisplayMode DisplayMode { get; set; }
-
         public double ProgressValue { get; set; }
-
-        public HashSet<sbyte[]> Solutions { get; set; }
-
-        public event QueenPlacedHandler QueenPlaced;
-
-        public event SolutionFoundHandler SolutionFound;
-
-        public event ProgressValueChangedHandler ProgressValueChanged;
 
         public Task<ISimulationResults> GetSimulationResultsAsync(sbyte boardSize, SolutionMode solutionMode, DisplayMode displayMode = DisplayMode.Hide)
         {
@@ -42,6 +30,20 @@ namespace NQueen.Kernel
         }
 
         #endregion ISolverInterface
+
+        #region ILivePresentation
+
+        public int DelayInMilliseconds { get; set; }
+
+        public DisplayMode DisplayMode { get; set; }
+
+        public event QueenPlacedHandler QueenPlaced;
+
+        public event SolutionFoundHandler SolutionFound;
+
+        public event ProgressValueChangedHandler ProgressValueChanged;
+
+        #endregion ILivePresentation
 
         public ISimulationResults GetResults()
         {
@@ -61,6 +63,8 @@ namespace NQueen.Kernel
         }
 
         #region PublicProperties
+
+        public HashSet<sbyte[]> Solutions { get; set; }
 
         public sbyte BoardSize { get; set; }
 
