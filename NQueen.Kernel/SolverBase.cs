@@ -39,7 +39,7 @@ namespace NQueen.Kernel
             {
                 BoardSize = BoardSize,
                 Solutions = solutions,
-                TotalNoOfSolutions = (SolutionMode == SolutionMode.All) ? NoOfSolutions : Solutions.Count,
+                TotalNoOfSolutions = (SolutionMode == SolutionMode.All) ? NoOfSolutionsAll : Solutions.Count,
                 ElapsedTimeInSec = elapsedTimeInSec
             };
         }
@@ -72,7 +72,7 @@ namespace NQueen.Kernel
 
         public string BoardSizeText { get; set; }
 
-        public int NoOfSolutions { get; set; }
+        public int NoOfSolutionsAll { get; set; }
 
         public sbyte HalfSize { get; set; }
 
@@ -135,10 +135,10 @@ namespace NQueen.Kernel
             // For SolutionMode.All: Increase NoOfAllSolutions, and save this solution, if MaxNoOfSolutionsInOutput not reached.
             if (SolutionMode == SolutionMode.All)
             {
-                if (NoOfSolutions < Utility.MaxNoOfSolutionsInOutput)
+                if (NoOfSolutionsAll < Utility.MaxNoOfSolutionsInOutput)
                 { Solutions.Add(solution); }
 
-                NoOfSolutions++;
+                NoOfSolutionsAll++;
                 return;
             }
 
