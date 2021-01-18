@@ -26,17 +26,17 @@ namespace NQueen.Kernel
             if (colNo == -1)
             { return; }
 
-            // For SolutionMode == SolutionMode.Unique: If half sized is reached, quit the recursion.
+            // If half sized is reached, quit the recursion.
             if (QueenList[0] == HalfSize)
             { return; }
 
-            if (NoOfSolutions == 1)
+            if (Solutions.Count == 1)
             { return; }
 
-            // A new solution is found.
+            // The solution is found.
             if (colNo == BoardSize)
             {
-                UpdateSolutions(QueenList);
+                Solutions.Add(QueenList.ToArray());
                 return;
             }
 
