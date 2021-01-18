@@ -22,25 +22,24 @@ namespace NQueen.Kernel
                     .Select((s, index) => new Solution(s, index + 1));
         }
 
-        private void RecSolveConsoleForAllSolutions(sbyte colNo)
+        private bool RecSolveConsoleForAllSolutions(sbyte colNo)
         {
             if (colNo == -1)
-            { return; }
+            { return false; }
 
             // A new solution is found.
             if (colNo == BoardSize)
             {
                 UpdateSolutions(QueenList);
-                return;
+                return false;
             }
 
             QueenList[colNo] = LocateQueen(colNo);
             if (QueenList[colNo] == -1)
-            { return; }
+            { return false; }
 
             var nextCol = (sbyte)(colNo + 1);
-            RecSolveConsoleForAllSolutions(nextCol);
-            RecSolveConsoleForAllSolutions(colNo);
+            return RecSolveConsoleForAllSolutions(nextCol) || RecSolveConsoleForAllSolutions(colNo);
         }
     }
 }

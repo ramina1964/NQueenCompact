@@ -90,35 +90,34 @@ namespace NQueen.Kernel
 
         public abstract IEnumerable<Solution> MainSolve();
 
-        protected void RecSolve(sbyte colNo)
+        protected bool RecSolve(sbyte colNo)
         {
             if (CancelSolver)
-            { return; }
+            { return false; }
 
             // For SolutionMode == SolutionMode.Unique: If half sized is reached, quit the recursion.
             if (QueenList[0] == HalfSize)
-            { return; }
+            { return false; }
 
             if (SolutionMode == SolutionMode.Single && Solutions.Count == 1)
-            { return; }
+            { return true; }
 
             if (colNo == -1)
-            { return; }
+            { return false; }
 
             // A new solution is found.
             if (colNo == BoardSize)
             {
                 UpdateSolutions(QueenList);
-                return;
+                return true;
             }
 
             QueenList[colNo] = LocateQueen(colNo);
             if (QueenList[colNo] == -1)
-            { return; }
+            { return false; }
 
             var nextCol = (sbyte)(colNo + 1);
-            RecSolve(nextCol);
-            RecSolve(colNo);
+            return RecSolve(nextCol) || RecSolve(colNo);
         }
 
         protected void UpdateSolutions(IEnumerable<sbyte> queens)

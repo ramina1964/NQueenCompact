@@ -21,32 +21,31 @@ namespace NQueen.Kernel
                     .Select((s, index) => new Solution(s, index + 1));
         }
 
-        private void RecSolveConsoleForSingelSolutions(sbyte colNo)
+        private bool RecSolveConsoleForSingelSolutions(sbyte colNo)
         {
             if (colNo == -1)
-            { return; }
+            { return false; }
 
-            // If half sized is reached, quit the recursion.
+            // Because of a symmetrical board, there is no need to continue.
             if (QueenList[0] == HalfSize)
-            { return; }
+            { return false; }
 
             if (Solutions.Count == 1)
-            { return; }
+            { return false; }
 
             // The solution is found.
             if (colNo == BoardSize)
             {
                 Solutions.Add(QueenList.ToArray());
-                return;
+                return true;
             }
 
             QueenList[colNo] = LocateQueen(colNo);
             if (QueenList[colNo] == -1)
-            { return; }
+            { return false; }
 
             var nextCol = (sbyte)(colNo + 1);
-            RecSolveConsoleForSingelSolutions(nextCol);
-            RecSolveConsoleForSingelSolutions(colNo);
+            return RecSolveConsoleForSingelSolutions(nextCol) || RecSolveConsoleForSingelSolutions(colNo);
         }
     }
 }

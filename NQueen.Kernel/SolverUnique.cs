@@ -21,26 +21,28 @@ namespace NQueen.Kernel
                     .Select((s, index) => new Solution(s, index + 1));
         }
 
-        private void RecSolveConsoleForUniqueSolutions(sbyte colNo)
+        private bool RecSolveConsoleForUniqueSolutions(sbyte colNo)
         {
             // All Symmetrical solutions are found and saved. Quit the recursion.
             if (QueenList[0] == HalfSize)
-            { return; }
+            { return false; }
+
+            if (colNo == -1)
+            { return false; }
 
             // Here a new solution is found.
             if (colNo == BoardSize)
             {
                 UpdateSolutions(QueenList);
-                return;
+                return false;
             }
 
             QueenList[colNo] = LocateQueen(colNo);
             if (QueenList[colNo] == -1)
-            { return; }
+            { return false; }
 
             var nextCol = (sbyte)(colNo + 1);
-            RecSolveConsoleForUniqueSolutions(nextCol);
-            RecSolveConsoleForUniqueSolutions(colNo);
+            return RecSolveConsoleForUniqueSolutions(nextCol) || RecSolveConsoleForUniqueSolutions(colNo);
         }
     }
 }
