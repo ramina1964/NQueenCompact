@@ -10,7 +10,7 @@ namespace NQueen.Tests
     [TestFixture]
     public class TestBase
     {
-        public Solver Sut { get; set; }
+        public SolverBase Sut { get; set; }
 
         public List<sbyte[]> ExpectedSolutions { get; set; }
 

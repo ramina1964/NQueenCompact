@@ -9,41 +9,23 @@ using System.Threading.Tasks;
 
 namespace NQueen.Kernel
 {
-    public class Solver : ISolver, ISolutionBuildup
+    public abstract class SolverBase : ISolutionBuildup, ISolver
     {
-        public Solver(sbyte boardSize) => Initialize(boardSize);
+        public SolverBase(sbyte boardSize) => Initialize(boardSize);
 
-        #region ISolverInterface
-
-        public bool CancelSolver { get; set; }
+        #region ISolver
 
         public SolutionMode SolutionMode { get; set; }
 
-        public double ProgressValue { get; set; }
-
-        public Task<ISimulationResults> GetSimulationResultsAsync(sbyte boardSize, SolutionMode solutionMode, DisplayMode displayMode = DisplayMode.Hide)
+        public Task<ISimulationResults> GetSimulationResultsAsync(
+            sbyte boardSize, SolutionMode solutionMode,
+            DisplayMode displayMode = DisplayMode.Hide)
         {
             Initialize(boardSize);
             SolutionMode = solutionMode;
             DisplayMode = displayMode;
             return Task.Factory.StartNew(() => GetResults());
         }
-
-        #endregion ISolverInterface
-
-        #region ILivePresentation
-
-        public int DelayInMilliseconds { get; set; }
-
-        public DisplayMode DisplayMode { get; set; }
-
-        public event QueenPlacedHandler QueenPlaced;
-
-        public event SolutionFoundHandler SolutionFound;
-
-        public event ProgressValueChangedHandler ProgressValueChanged;
-
-        #endregion ILivePresentation
 
         public ISimulationResults GetResults()
         {
@@ -61,6 +43,26 @@ namespace NQueen.Kernel
                 ElapsedTimeInSec = elapsedTimeInSec
             };
         }
+
+        #endregion ISolver
+
+        #region ISolutionBuilup
+
+        public bool CancelSolver { get; set; }
+
+        public int DelayInMilliseconds { get; set; }
+
+        public DisplayMode DisplayMode { get; set; }
+
+        public double ProgressValue { get; set; }
+
+        public event QueenPlacedHandler QueenPlaced;
+
+        public event SolutionFoundHandler SolutionFound;
+
+        public event ProgressValueChangedHandler ProgressValueChanged;
+
+        #endregion ISolutionBuildup
 
         #region PublicProperties
 
@@ -86,67 +88,9 @@ namespace NQueen.Kernel
 
         #region PrivateMethods
 
-        private IEnumerable<Solution> MainSolve()
-        {
-            // Recursive call to start the simulation
-            if (SolutionMode == SolutionMode.All && DisplayMode == DisplayMode.Hide)
-            { RecSolveConsoleForAllSolutions(0); }
+        public abstract IEnumerable<Solution> MainSolve();
 
-            else if (SolutionMode == SolutionMode.Unique && DisplayMode == DisplayMode.Hide)
-            { RecSolveConsoleForUniqueSolutions(0); }
-
-            else
-            { RecSolve(0); }
-
-            return Solutions
-                    .Select((s, index) => new Solution(s, index + 1));
-        }
-
-        // Recursive Solve Algorithm Simplified for Console, and SolutionMode.All
-        private void RecSolveConsoleForAllSolutions(sbyte colNo)
-        {
-            if (colNo == -1)
-            { return; }
-
-            // A new solution is found.
-            if (colNo == BoardSize)
-            {
-                UpdateSolutions(QueenList);
-                return;
-            }
-
-            QueenList[colNo] = LocateQueen(colNo);
-            if (QueenList[colNo] == -1)
-            { return; }
-
-            var nextCol = (sbyte)(colNo + 1);
-            RecSolveConsoleForAllSolutions(nextCol);
-            RecSolveConsoleForAllSolutions(colNo);
-        }
-
-        private void RecSolveConsoleForUniqueSolutions(sbyte colNo)
-        {
-            // All Symmetrical solutions are found and saved. Quit the recursion.
-            if (QueenList[0] == HalfSize)
-            { return; }
-
-            // Here a new solution is found.
-            if (colNo == BoardSize)
-            {
-                UpdateSolutions(QueenList);
-                return;
-            }
-
-            QueenList[colNo] = LocateQueen(colNo);
-            if (QueenList[colNo] == -1)
-            { return; }
-
-            var nextCol = (sbyte)(colNo + 1);
-            RecSolveConsoleForUniqueSolutions(nextCol);
-            RecSolveConsoleForUniqueSolutions(colNo);
-        }
-
-        private void RecSolve(sbyte colNo)
+        protected void RecSolve(sbyte colNo)
         {
             if (CancelSolver)
             { return; }
@@ -177,7 +121,7 @@ namespace NQueen.Kernel
             RecSolve(colNo);
         }
 
-        private void UpdateSolutions(IEnumerable<sbyte> queens)
+        protected void UpdateSolutions(IEnumerable<sbyte> queens)
         {
             var solution = queens.ToArray();
 
@@ -207,7 +151,7 @@ namespace NQueen.Kernel
         }
 
         // Locate Queen
-        private sbyte LocateQueen(sbyte colNo)
+        protected sbyte LocateQueen(sbyte colNo)
         {
             for (sbyte pos = (sbyte)(QueenList[colNo] + 1); pos < BoardSize; pos++)
             {
@@ -230,7 +174,7 @@ namespace NQueen.Kernel
             return -1;
         }
 
-        private void Initialize(sbyte boardSize)
+        protected void Initialize(sbyte boardSize)
         {
             BoardSize = boardSize;
             CancelSolver = false;

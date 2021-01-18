@@ -1,5 +1,4 @@
 ﻿using NQueen.Shared.Enums;
-using System.Threading.Tasks;
 
 namespace NQueen.Shared.Interfaces
 {
@@ -7,6 +6,6 @@ namespace NQueen.Shared.Interfaces
     {
         SolutionMode SolutionMode { get; set; }
 
-        Task<ISimulationResults> GetSimulationResultsAsync(sbyte boardSize, SolutionMode solutionMode, DisplayMode displayMode);
+        ISimulationResults GetResults();
     }
 }
