@@ -8,7 +8,7 @@ namespace NQueen.Shared.Interfaces
 
         IEnumerable<Solution> Solutions { get; }
 
-        int NoOfSolutions { get; }
+        int TotalNoOfSolutions { get; }
 
         double ElapsedTimeInSec { get; }
     }

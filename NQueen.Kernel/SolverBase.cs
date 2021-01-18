@@ -39,7 +39,7 @@ namespace NQueen.Kernel
             {
                 BoardSize = BoardSize,
                 Solutions = solutions,
-                NoOfSolutions = (SolutionMode == SolutionMode.All) ? NoOfSolutions : Solutions.Count,
+                TotalNoOfSolutions = (SolutionMode == SolutionMode.All) ? NoOfSolutions : Solutions.Count,
                 ElapsedTimeInSec = elapsedTimeInSec
             };
         }
@@ -129,7 +129,7 @@ namespace NQueen.Kernel
             if (SolutionMode == SolutionMode.Single)
             {
                 Solutions.Add(solution);
-                NoOfSolutions++;
+                NoOfSolutions = 1;
                 return;
             }
 

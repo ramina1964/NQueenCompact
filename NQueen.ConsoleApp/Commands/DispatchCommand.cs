@@ -50,16 +50,14 @@ namespace NQueen.ConsoleApp.Commands
         #region PrivateMethods
         private static bool RunApp()
         {
-            //var solver = new SolverBase(BoardSize)
-            //{ SolutionMode = SolutionMode };
-
-            SolverBase solver =
-                (SolutionMode == SolutionMode.All)
-                ? new SolverAll(BoardSize)
-                : new SolverUnique(BoardSize);
+            SolverBase solver = (SolutionMode == SolutionMode.Single)
+                                ? new SolverSingel(BoardSize)
+                                : (SolutionMode == SolutionMode.Unique)
+                                ? new SolverUnique(BoardSize)
+                                : new SolverAll(BoardSize);
 
             var simulationResult = solver.GetSimulationResultsAsync(BoardSize, SolutionMode, DisplayMode.Hide).Result;
-            var noOfSolutions = simulationResult.NoOfSolutions;
+            var noOfSolutions = simulationResult.TotalNoOfSolutions;
             var elapsedTime = simulationResult.ElapsedTimeInSec;
             var firstSolution = simulationResult.Solutions.FirstOrDefault();
             var formattedSolutionNo = $"Number of solutions found: {noOfSolutions,10:N0}";

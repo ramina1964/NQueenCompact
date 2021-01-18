@@ -18,7 +18,7 @@ namespace NQueen.Tests
 
         public ISimulationResults ActualSolutions { get; set; }
 
-        public int ActualNoOfSolutions => ActualSolutions.NoOfSolutions;
+        public int ActualNoOfSolutions => ActualSolutions.TotalNoOfSolutions;
 
         public static List<sbyte[]> GetExpectedSolutions(sbyte boardSize, SolutionMode solutionMode)
             => solutionMode == SolutionMode.Single

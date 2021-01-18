@@ -15,13 +15,13 @@ namespace NQueen.Kernel
             var sol = enumerable.FirstOrDefault();
             if (sol == null)
             {
-                NoOfSolutions = 0;
+                TotalNoOfSolutions = 0;
                 Solutions = new List<Solution>();
             }
             else
             {
                 BoardSize = (sbyte)sol.Positions.Count;
-                NoOfSolutions = enumerable.Count;
+                TotalNoOfSolutions = enumerable.Count;
                 Solutions = new List<Solution>(enumerable);
             }
         }
@@ -32,7 +32,7 @@ namespace NQueen.Kernel
 
         public IEnumerable<Solution> Solutions { get; set; }
 
-        public int NoOfSolutions { get; set; }
+        public int TotalNoOfSolutions { get; set; }
 
         public double ElapsedTimeInSec { get; set; }
 
