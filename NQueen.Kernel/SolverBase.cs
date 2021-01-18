@@ -99,7 +99,7 @@ namespace NQueen.Kernel
             if (QueenList[0] == HalfSize)
             { return; }
 
-            if (SolutionMode == SolutionMode.Single && NoOfSolutions == 1)
+            if (SolutionMode == SolutionMode.Single && Solutions.Count == 1)
             { return; }
 
             if (colNo == -1)
@@ -129,7 +129,6 @@ namespace NQueen.Kernel
             if (SolutionMode == SolutionMode.Single)
             {
                 Solutions.Add(solution);
-                NoOfSolutions = 1;
                 return;
             }
 
