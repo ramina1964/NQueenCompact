@@ -39,6 +39,15 @@ namespace NQueen.Tests
         public static List<sbyte[]> GetAllSolutions(sbyte boardSize) => allSolutions[boardSize];
 
         #region PrivateAttributes
+        protected SolverBase GetSolverBase(sbyte boardSize, SolutionMode solutionMode)
+        {
+            return (solutionMode == SolutionMode.Single)
+                ? new SolverSingel(boardSize)
+                : (solutionMode == SolutionMode.Unique)
+                ? new SolverUnique(boardSize)
+                : new SolverAll(boardSize);
+        }
+
         private static readonly Dictionary<sbyte, List<sbyte[]>> singleSolution = new Dictionary<sbyte, List<sbyte[]>>
         {
             { 1, new List<sbyte[]> { new sbyte[]  { 0 } } },
