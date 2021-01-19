@@ -39,7 +39,8 @@ namespace NQueen.Tests
         public static List<sbyte[]> GetAllSolutions(sbyte boardSize) => allSolutions[boardSize];
 
         #region PrivateAttributes
-        protected SolverBase GetSolverBase(sbyte boardSize, SolutionMode solutionMode)
+
+        protected static SolverBase GetSolverBase(sbyte boardSize, SolutionMode solutionMode)
         {
             return (solutionMode == SolutionMode.Single)
                 ? new SolverSingel(boardSize)

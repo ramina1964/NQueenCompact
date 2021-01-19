@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace NQueen.Tests
 {
-    public class NQueenSolverTests : TestBase
+    public class SolverTests : TestBase
     {
         [TestCase(2, SolutionMode.Single), TestCase(3, SolutionMode.Single)]
         [TestCase(2, SolutionMode.Unique), TestCase(3, SolutionMode.Unique)]

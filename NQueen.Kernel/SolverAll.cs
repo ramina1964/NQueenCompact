@@ -9,7 +9,7 @@ namespace NQueen.Kernel
     {
         public SolverAll(sbyte boardSize) : base(boardSize) { }
 
-        public override IEnumerable<Solution> MainSolve()
+        protected override IEnumerable<Solution> MainSolver()
         {
             // Recursive call to start the simulation
             if (DisplayMode == DisplayMode.Hide)
@@ -34,7 +34,7 @@ namespace NQueen.Kernel
                 return false;
             }
 
-            QueenList[colNo] = LocateQueen(colNo);
+            QueenList[colNo] = PlaceQueen(colNo);
             if (QueenList[colNo] == -1)
             { return false; }
 

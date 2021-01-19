@@ -9,7 +9,7 @@ namespace NQueen.Kernel
     {
         public SolverUnique(sbyte boardSize) : base(boardSize) { }
 
-        public override IEnumerable<Solution> MainSolve()
+        protected override IEnumerable<Solution> MainSolver()
         {
             if (DisplayMode == DisplayMode.Hide)
             { RecSolveConsoleForUniqueSolutions(0); }
@@ -23,7 +23,7 @@ namespace NQueen.Kernel
 
         private bool RecSolveConsoleForUniqueSolutions(sbyte colNo)
         {
-            // All Symmetrical solutions are found and saved. Quit the recursion.
+            // Because of a symmetrical board, there is no need to continue, when HalfSize is reached.
             if (QueenList[0] == HalfSize)
             { return false; }
 
@@ -37,7 +37,7 @@ namespace NQueen.Kernel
                 return false;
             }
 
-            QueenList[colNo] = LocateQueen(colNo);
+            QueenList[colNo] = PlaceQueen(colNo);
             if (QueenList[colNo] == -1)
             { return false; }
 
