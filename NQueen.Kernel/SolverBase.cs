@@ -47,7 +47,7 @@ namespace NQueen.Kernel
 
         #endregion ISolutionBuildup
 
-        #region PublicProperties
+        #region PublicAttributes
 
         public HashSet<sbyte[]> Solutions { get; set; }
 
@@ -61,7 +61,16 @@ namespace NQueen.Kernel
 
         public sbyte[] QueenList { get; set; }
 
-        #endregion PublicProperties
+        public static SolverBase GetSolver(sbyte boardSize, SolutionMode solutionMode) =>
+            solutionMode switch
+            {
+                SolutionMode.Single => new SolverSingel(boardSize),
+                SolutionMode.Unique => new SolverUnique(boardSize),
+                SolutionMode.All => new SolverAll(boardSize),
+                _ => throw new NotImplementedException(),
+            };
+
+        #endregion PublicAttributes
 
         public ISimulationResults GetResults()
         {

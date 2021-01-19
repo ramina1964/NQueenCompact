@@ -44,14 +44,14 @@ namespace NQueen.Tests
 
         #region PrivateAttributes
 
-        protected static SolverBase GetSolver(sbyte boardSize, SolutionMode solutionMode) =>
-            solutionMode switch
-            {
-                SolutionMode.Single => new SolverSingel(boardSize),
-                SolutionMode.Unique => new SolverUnique(boardSize),
-                SolutionMode.All => new SolverAll(boardSize),
-                _ => throw new NotImplementedException(),
-            };
+        //protected static SolverBase GetSolver(sbyte boardSize, SolutionMode solutionMode) =>
+        //    solutionMode switch
+        //    {
+        //        SolutionMode.Single => new SolverSingel(boardSize),
+        //        SolutionMode.Unique => new SolverUnique(boardSize),
+        //        SolutionMode.All => new SolverAll(boardSize),
+        //        _ => throw new NotImplementedException(),
+        //    };
 
         private static readonly Dictionary<sbyte, List<sbyte[]>> singleSolution = new Dictionary<sbyte, List<sbyte[]>>
         {
