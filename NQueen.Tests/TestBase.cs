@@ -2,6 +2,7 @@
 using NQueen.Shared.Enums;
 using NQueen.Shared.Interfaces;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,12 +21,15 @@ namespace NQueen.Tests
 
         public int ActualNoOfSolutions => ActualSolutions.TotalNoOfSolutions;
 
-        public static List<sbyte[]> GetExpectedSolutions(sbyte boardSize, SolutionMode solutionMode)
-            => solutionMode == SolutionMode.Single
-                ? GetSingleSolution(boardSize).ToList()
-                : solutionMode == SolutionMode.Unique
-                ? GetUniqueSolutions(boardSize).ToList()
-                : GetAllSolutions(boardSize).ToList();
+        public static List<sbyte[]> GetExpectedSolutions(sbyte boardSize, SolutionMode solutionMode) =>
+            solutionMode switch
+            {
+                SolutionMode.Single => GetSingleSolution(boardSize).ToList(),
+                SolutionMode.Unique => GetUniqueSolutions(boardSize).ToList(),
+                SolutionMode.All => GetAllSolutions(boardSize).ToList(),
+                _ => throw new NotImplementedException()
+            };
+
 
         public ISimulationResults GetActualSolutions(sbyte boardSize, SolutionMode solutionMode) =>
                 Sut
@@ -39,14 +43,15 @@ namespace NQueen.Tests
         public static List<sbyte[]> GetAllSolutions(sbyte boardSize) => allSolutions[boardSize];
 
         #region PrivateAttributes
-        protected SolverBase GetSolverBase(sbyte boardSize, SolutionMode solutionMode)
-        {
-            return (solutionMode == SolutionMode.Single)
-                ? new SolverSingel(boardSize)
-                : (solutionMode == SolutionMode.Unique)
-                ? new SolverUnique(boardSize)
-                : new SolverAll(boardSize);
-        }
+
+        protected static SolverBase GetSolver(sbyte boardSize, SolutionMode solutionMode) =>
+            solutionMode switch
+            {
+                SolutionMode.Single => new SolverSingel(boardSize),
+                SolutionMode.Unique => new SolverUnique(boardSize),
+                SolutionMode.All => new SolverAll(boardSize),
+                _ => throw new NotImplementedException(),
+            };
 
         private static readonly Dictionary<sbyte, List<sbyte[]>> singleSolution = new Dictionary<sbyte, List<sbyte[]>>
         {

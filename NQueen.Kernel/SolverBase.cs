@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NQueen.Kernel
 {
-    public abstract class SolverBase : ISolutionBuildup, ISolver
+    public abstract class SolverBase : ISolver, ISolutionBuildup
     {
         public SolverBase(sbyte boardSize) => Initialize(boardSize);
 
@@ -25,23 +25,6 @@ namespace NQueen.Kernel
             SolutionMode = solutionMode;
             DisplayMode = displayMode;
             return Task.Factory.StartNew(() => GetResults());
-        }
-
-        public ISimulationResults GetResults()
-        {
-            var stopwatch = Stopwatch.StartNew();
-            var solutions = MainSolve().ToList();
-            stopwatch.Stop();
-            var timeInSec = (double)stopwatch.ElapsedMilliseconds / 1000;
-            var elapsedTimeInSec = Math.Round(timeInSec, 1);
-
-            return new SimulationResults(solutions)
-            {
-                BoardSize = BoardSize,
-                Solutions = solutions,
-                TotalNoOfSolutions = (SolutionMode == SolutionMode.All) ? NoOfSolutionsAll : Solutions.Count,
-                ElapsedTimeInSec = elapsedTimeInSec
-            };
         }
 
         #endregion ISolver
@@ -80,15 +63,30 @@ namespace NQueen.Kernel
 
         #endregion PublicProperties
 
+        public ISimulationResults GetResults()
+        {
+            var stopwatch = Stopwatch.StartNew();
+            var solutions = MainSolver().ToList();
+            stopwatch.Stop();
+            var timeInSec = (double)stopwatch.ElapsedMilliseconds / 1000;
+            var elapsedTimeInSec = Math.Round(timeInSec, 1);
+
+            return new SimulationResults(solutions)
+            {
+                BoardSize = BoardSize,
+                Solutions = solutions,
+                TotalNoOfSolutions = (SolutionMode == SolutionMode.All) ? NoOfSolutionsAll : Solutions.Count,
+                ElapsedTimeInSec = elapsedTimeInSec
+            };
+        }
+
         protected virtual void OnProgressChanged(object sender, ProgressValueChangedEventArgs e) => ProgressValueChanged?.Invoke(this, e);
 
         protected virtual void OnQueenPlaced(object sender, QueenPlacedEventArgs e) => QueenPlaced?.Invoke(this, e);
 
         protected virtual void OnSolutionFound(object sender, SolutionFoundEventArgs e) => SolutionFound?.Invoke(this, e);
 
-        #region PrivateMethods
-
-        public abstract IEnumerable<Solution> MainSolve();
+        protected abstract IEnumerable<Solution> MainSolver();
 
         protected bool RecSolve(sbyte colNo)
         {
@@ -112,7 +110,7 @@ namespace NQueen.Kernel
                 return true;
             }
 
-            QueenList[colNo] = LocateQueen(colNo);
+            QueenList[colNo] = PlaceQueen(colNo);
             if (QueenList[colNo] == -1)
             { return false; }
 
@@ -120,9 +118,10 @@ namespace NQueen.Kernel
             return RecSolve(nextCol) || RecSolve(colNo);
         }
 
-        protected void UpdateSolutions(IEnumerable<sbyte> queens)
+        protected void UpdateSolutions(IEnumerable<sbyte> queenList)
         {
-            var solution = queens.ToArray();
+            // Must cache queenLIst because the underlying argument is continuously changing under the simulation.
+            var solution = queenList.ToArray();
 
             // If SolutionMode.Single, then we are done.
             if (SolutionMode == SolutionMode.Single)
@@ -148,8 +147,8 @@ namespace NQueen.Kernel
             { Solutions.Add(solution); }
         }
 
-        // Locate Queen
-        protected sbyte LocateQueen(sbyte colNo)
+        // Place Queen
+        protected sbyte PlaceQueen(sbyte colNo)
         {
             for (sbyte pos = (sbyte)(QueenList[colNo] + 1); pos < BoardSize; pos++)
             {
@@ -185,6 +184,5 @@ namespace NQueen.Kernel
             Solutions = new HashSet<sbyte[]>(new SequenceEquality<sbyte>());
         }
 
-        #endregion PrivateMethods
     }
 }

@@ -9,7 +9,7 @@ namespace NQueen.Kernel
     {
         public SolverSingel(sbyte boardSize) : base(boardSize) { }
 
-        public override IEnumerable<Solution> MainSolve()
+        protected override IEnumerable<Solution> MainSolver()
         {
             if (DisplayMode == DisplayMode.Hide)
             { RecSolveConsoleForSingelSolutions(0); }
@@ -26,7 +26,7 @@ namespace NQueen.Kernel
             if (colNo == -1)
             { return false; }
 
-            // Because of a symmetrical board, there is no need to continue.
+            // Because of a symmetrical board, there is no need to continue, when HalfSize is reached.
             if (QueenList[0] == HalfSize)
             { return false; }
 
@@ -40,7 +40,7 @@ namespace NQueen.Kernel
                 return true;
             }
 
-            QueenList[colNo] = LocateQueen(colNo);
+            QueenList[colNo] = PlaceQueen(colNo);
             if (QueenList[colNo] == -1)
             { return false; }
 
