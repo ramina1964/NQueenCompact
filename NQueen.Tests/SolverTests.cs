@@ -13,7 +13,7 @@ namespace NQueen.Tests
         public void Should_generate_an_empty_list_of_solutions(sbyte boardSize, SolutionMode solutionMode)
         {
             // Arrange
-            Sut = GetSolverBase(boardSize, solutionMode);
+            Sut = GetSolver(boardSize, solutionMode);
             ExpectedSolutions = GetExpectedSolutions(boardSize, solutionMode);
 
             // Act
@@ -35,7 +35,7 @@ namespace NQueen.Tests
         public void Should_generate_a_single_solution(sbyte boardSize, SolutionMode solutionMode)
         {
             // Arrange
-            Sut = GetSolverBase(boardSize, solutionMode);
+            Sut = GetSolver(boardSize, solutionMode);
             ExpectedSolutions = GetExpectedSolutions(boardSize, solutionMode);
 
             // Act
@@ -67,7 +67,7 @@ namespace NQueen.Tests
         public void Should_generate_correct_list_of_all_solutions(sbyte boardSize, SolutionMode solutionMode)
         {
             // Arrange
-            Sut = GetSolverBase(boardSize, solutionMode);
+            Sut = GetSolver(boardSize, solutionMode);
             ExpectedSolutions = GetExpectedSolutions(boardSize, solutionMode);
 
             // Act

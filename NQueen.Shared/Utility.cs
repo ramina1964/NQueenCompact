@@ -8,7 +8,7 @@ namespace NQueen.Shared
     public static class Utility
     {
         public const int MaxNoOfSolutionsInOutput = 50;
-        public const int DefaultDelayInMilliseconds = 250;  
+        public const int DefaultDelayInMilliseconds = 250;
         public const sbyte DefaultBoardSize = 8;
         public const sbyte RelativeFactor = 8;
         public const sbyte MinBoardSize = 1;
@@ -68,22 +68,22 @@ namespace NQueen.Shared
             solution.SelectMany(s => GetSymmetricalSolutions(s)).ToList();
 
         public static int FindSolutionSize(sbyte boardSize, SolutionMode solutionMode) =>
-            solutionMode == SolutionMode.Single
-                ? 1
-                : solutionMode == SolutionMode.Unique
-                ? GetSolutionSizeUnique(boardSize)
-                : GetSolutionSizeAll(boardSize);
+            solutionMode switch
+            {
+                SolutionMode.Single => 1,
+                SolutionMode.Unique => GetSolutionSizeUnique(boardSize),
+                SolutionMode.All => GetSolutionSizeAll(boardSize),
+                _ => throw new NotImplementedException(),
+            };
 
-        public static string SolutionTitle(SolutionMode solutionMode)
-        {
-            return solutionMode switch
+        public static string SolutionTitle(SolutionMode solutionMode) =>
+            solutionMode switch
             {
                 SolutionMode.Single => "No. of Solutions",
                 SolutionMode.Unique => $"No. of Unique Solutions",
                 SolutionMode.All => $"No. of All Solutions",
                 _ => throw new MissingFieldException("Non-Existent Enum Value!"),
             };
-        }
 
         public static string SolutionTitle(SolutionMode solutionMode, int noOfSolutions)
         {
